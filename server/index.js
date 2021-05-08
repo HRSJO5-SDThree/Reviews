@@ -15,9 +15,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/reviews', async (req, res)=>{
   var reviews = await reviewsModel.getReviews(req.query.product_id)
   res.send(reviews)
-}
+})
 
-)
+
+app.get('/reviews/meta', async (req, res)=>{
+  var reviews = await reviewsModel.getMeta(req.query.product_id)
+  res.send(reviews)
+})
 
 
 app.listen(port, () => console.log(`Listening on ${port}`));
