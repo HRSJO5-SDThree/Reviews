@@ -29,5 +29,10 @@ app.post('/reviews', async (req, res)=>{
   res.send(status)
 })
 
+app.put('/reviews/:review_id/helpful', async (req, res)=>{
+  var status = await reviewsModel.PostReview(req.body)
+  res.send(status)
+})
+
 
 app.listen(port, () => console.log(`Listening on ${port}`));

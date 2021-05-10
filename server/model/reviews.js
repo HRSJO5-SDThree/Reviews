@@ -114,11 +114,15 @@ module.exports ={
       photos: reviewData.photos,
       characteristics: [charObj],
     }
-    console.log(newReview)
     return model.findOneAndUpdate({_id:reviewData.product_id}, {$push: {reviews: newReview}})
     .then(()=> 200)
     .catch(()=>500)
   },
+
+
+  MarkHelpful: ()=>{
+    
+  }
 
 }
 
