@@ -6,7 +6,9 @@ const reviewProduct = new mongoose.Schema({
   reviews:[]
 })
 
-const model= mongoose.model('reviewProduct', reviewProduct, 'reviewsAgg')
+const model= mongoose.model('reviewProduct', reviewProduct, 'reviewsAgg');
+const counter= mongoose.model('counter', {count: Number}, 'counter');
+
 
 module.exports ={
 
@@ -85,8 +87,37 @@ module.exports ={
 
   },
 
-  PostReview: (reviewData)=>{
-    console.log(reviewData)
+  PostReview: async (reviewData)=>{
+   var reviewID= await counter.findOne({}, {count: 1})
+   reviewID = reviewID.count +1;
+   await counter.update({}, {$inc: {count:1}})
+    var characteristics= [];
+    for (var key in reviewData.characteristics){
+      var charObj= {
+        characteristic_id: key,
+        value: reviewData.characteristics[key]['value'],
+        name: [{name: reviewData.characteristics[key]['name']}],
+      }
+      characteristics.push(charObj)
+    }
+    newReview ={
+      id: reviewID,
+      product_id:reviewData.product_id,
+      rating: reviewData.rating,
+      date: Date(),
+      summary: reviewData.summary,
+      body:reviewData.body,
+      recommend: reviewData.recommend,
+      reported: false,
+      reviewer_name: reviewData.name,
+      review_email: reviewData.email,
+      photos: reviewData.photos,
+      characteristics: [charObj],
+    }
+    console.log(newReview)
+    return model.findOneAndUpdate({_id:reviewData.product_id}, {$push: {reviews: newReview}})
+    .then(()=> 200)
+    .catch(()=>500)
   },
 
 }
