@@ -71,8 +71,7 @@ module.exports ={
         })
       })
       for(var key in characteristics){
-          console.log(reviews.length)
-          characteristics[key]= (characteristics[key] / reviews.length)
+          characteristics[key]= (characteristics[key] / reviews.reviews.length)
         }
        var response = {
          product_id: reviews._id,
