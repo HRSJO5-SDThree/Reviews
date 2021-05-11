@@ -3,7 +3,23 @@ const mongoose = require('mongoose');
 
 const reviewProduct = new mongoose.Schema({
   _id: {type: Number, required: true},
-  reviews:[]
+  reviews:[{
+    id: Number,
+    product_id: Number,
+    helpfulness: Number,
+    reported: Boolean,
+    review_id: Number,
+    rating: Number,
+    summary: String,
+    recomended: Boolean,
+    response: String,
+    body: String,
+    review_email: String,
+    date: Date,
+    reviewer_name: String,
+    photos: Object,
+    characteristics: Object,
+  }]
 })
 
 const model= mongoose.model('reviewProduct', reviewProduct, 'reviewsAgg');
@@ -87,10 +103,10 @@ module.exports ={
 
   },
 
-  PostReview: async (reviewData)=>{
+  postReview: async (reviewData)=>{
    var reviewID= await counter.findOne({}, {count: 1})
    reviewID = reviewID.count +1;
-   await counter.update({}, {$inc: {count:1}})
+   await counter.updateOne({}, {$inc: {count:1}})
     var characteristics= [];
     for (var key in reviewData.characteristics){
       var charObj= {
@@ -109,6 +125,7 @@ module.exports ={
       body:reviewData.body,
       recommend: reviewData.recommend,
       reported: false,
+      helpfulness: 0,
       reviewer_name: reviewData.name,
       review_email: reviewData.email,
       photos: reviewData.photos,
@@ -120,12 +137,23 @@ module.exports ={
   },
 
 
-  MarkHelpful: ()=>{
-    
+
+  markHelpful: (reviewID)=>{
+    reviewID = Number(reviewID)
+    return model.updateOne({'reviews.id': reviewID }, {$inc: {'reviews.$[rev].helpfulness': 1}}, {arrayFilters:[{'rev.id':reviewID}]})
+    .then(()=> 200)
+    .catch(()=>500)
+  },
+
+  markReported: (reviewID)=>{
+    console.log(reviewID)
+    reviewID = Number(reviewID)
+    return model.updateOne({'reviews.id': reviewID }, {$set: {'reviews.$[rev].reported': true}}, {arrayFilters:[{'rev.id':reviewID}]})
+    .then(()=> 200)
+    .catch(()=>500)
   }
 
 }
-
 
 
 // {

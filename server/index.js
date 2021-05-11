@@ -25,13 +25,18 @@ app.get('/reviews/meta', async (req, res)=>{
 })
 
 app.post('/reviews', async (req, res)=>{
-  var status = await reviewsModel.PostReview(req.body)
-  res.send(status)
+  var status = await reviewsModel.postReview(req.body)
+  res.status(status).end()
 })
 
 app.put('/reviews/:review_id/helpful', async (req, res)=>{
-  var status = await reviewsModel.PostReview(req.body)
-  res.send(status)
+  var status = await reviewsModel.markHelpful(req.params.review_id)
+  res.status(status).end()
+})
+
+app.put('/reviews/:review_id/report', async (req, res)=>{
+  var status = await reviewsModel.markReported(req.params.review_id)
+  res.status(status).end()
 })
 
 
