@@ -132,7 +132,7 @@ module.exports ={
       characteristics: [charObj],
     }
     return model.findOneAndUpdate({_id:reviewData.product_id}, {$push: {reviews: newReview}})
-    .then(()=> 200)
+    .then(()=> 201)
     .catch(()=>500)
   },
 
@@ -141,14 +141,14 @@ module.exports ={
   markHelpful: (reviewID)=>{
     reviewID = Number(reviewID);
     return model.updateOne({'reviews.id': reviewID }, {$inc: {'reviews.$[rev].helpfulness': 1}}, {arrayFilters:[{'rev.id':reviewID}]})
-    .then(()=> 200)
+    .then(()=> 204)
     .catch(()=>500)
   },
 
   markReported: (reviewID)=>{
     reviewID = Number(reviewID);
     return model.updateOne({'reviews.id': reviewID }, {$set: {'reviews.$[rev].reported': true}}, {arrayFilters:[{'rev.id':reviewID}]})
-    .then(()=> 200)
+    .then(()=> 204)
     .catch(()=>500)
   }
 
