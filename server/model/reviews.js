@@ -139,15 +139,14 @@ module.exports ={
 
 
   markHelpful: (reviewID)=>{
-    reviewID = Number(reviewID)
+    reviewID = Number(reviewID);
     return model.updateOne({'reviews.id': reviewID }, {$inc: {'reviews.$[rev].helpfulness': 1}}, {arrayFilters:[{'rev.id':reviewID}]})
     .then(()=> 200)
     .catch(()=>500)
   },
 
   markReported: (reviewID)=>{
-    console.log(reviewID)
-    reviewID = Number(reviewID)
+    reviewID = Number(reviewID);
     return model.updateOne({'reviews.id': reviewID }, {$set: {'reviews.$[rev].reported': true}}, {arrayFilters:[{'rev.id':reviewID}]})
     .then(()=> 200)
     .catch(()=>500)
@@ -156,14 +155,3 @@ module.exports ={
 }
 
 
-// {
-//   "product_id": 13023,
-//   "rating": 5,
-//   "summary": "summary",
-//   "body": "ahdskfjhaksjdfhkaJHDFajhdfkajhdfsjkahdjsfhadskjfhakjsdhfakjsdhdfjkajsdhdfakjsdfh",
-//   "recommend": false,
-//   "name": "user123",
-//   "email": "fake@gmail.com",
-//   "photos": [ "https://fec-04-21.s3.amazonaws.com/cat2.jpeg" ],
-//   "characteristics": { "43617": 1, "43618": 1, "43619": 1, "43620": 1 }
-// }

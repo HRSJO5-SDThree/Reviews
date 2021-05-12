@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost:27017/RatingsReviews')
 
 
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.get('/reviews', async (req, res)=>{
   var reviews = await reviewsModel.getReviews(req.query.product_id)
