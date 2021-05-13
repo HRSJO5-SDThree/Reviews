@@ -8,7 +8,7 @@ const app = express()
 const port = 3000;
 
 
-mongoose.connect('mongodb://localhost:27017/RatingsReviews')
+mongoose.connect('mongodb://ubuntu@54.177.210.81/RatingsReviews')
 
 
 app.use(bodyParser.json());
